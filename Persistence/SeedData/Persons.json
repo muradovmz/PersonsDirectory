@@ -1,0 +1,67 @@
+﻿[
+  {
+    "Id": "632b2279-9fab-498e-99c1-ecc2d0cdba06",
+    "PrivateNumber": "00000000001",
+    "FirstnameGE": "ტესტ1",
+    "FirstnameEN": "Test1",
+    "LastnameGE": "სატესტო1",
+    "LastnameEN": "Testing1",
+    "Birthdate": "1980-01-01",
+    "Address": "სატესტო მისამართი 1",
+    "Phone": "000000001",
+    "Email": "test1@test.org",
+    "PictureUrl": "images/people/person.png"
+  },
+  {
+    "Id": "2f40f5c0-43d7-4c91-9a1b-313402ee79a9",
+    "PrivateNumber": "00000000002",
+    "FirstnameGE": "ტესტ2",
+    "FirstnameEN": "Test2",
+    "LastnameGE": "სატესტო2",
+    "LastnameEN": "Testing2",
+    "Birthdate": "1981-02-02",
+    "Address": "სატესტო მისამართი 2",
+    "Phone": "000000002",
+    "Email": "test2@test.org",
+    "PictureUrl": "images/people/person.png"
+  },
+  {
+    "Id": "2ddc7a48-6ed4-4813-a849-4b1f83b743ab",
+    "PrivateNumber": "00000000003",
+    "FirstnameGE": "ტესტ3",
+    "FirstnameEN": "Test3",
+    "LastnameGE": "სატესტო3",
+    "LastnameEN": "Testing3",
+    "Birthdate": "1983-03-03",
+    "Address": "სატესტო მისამართი 3",
+    "Phone": "000000003",
+    "Email": "test3@test.org",
+    "PictureUrl": "images/people/person.png"
+  },
+  {
+    "Id": "3F8BBF31-442D-450D-5649-08D92BE6D987",
+    "PrivateNumber": "00000000004",
+    "FirstnameGE": "ტესტ4",
+    "FirstnameEN": "Test4",
+    "LastnameGE": "სატესტო4",
+    "LastnameEN": "Testing4",
+    "Birthdate": "1984-04-04",
+    "Address": "სატესტო მისამართი 4",
+    "Phone": "000000004",
+    "Email": "test4@test.org",
+    "PictureUrl": "images/people/person.png"
+  },
+  {
+    "Id": "05394204-3085-4C56-564A-08D92BE6D987",
+    "PrivateNumber": "00000000005",
+    "FirstnameGE": "ტესტ5",
+    "FirstnameEN": "Test5",
+    "LastnameGE": "სატესტო5",
+    "LastnameEN": "Testing5",
+    "Birthdate": "1985-05-05",
+    "Address": "სატესტო მისამართი 5",
+    "Phone": "000000005",
+    "Email": "test5@test.org",
+    "PictureUrl": "images/people/person.png"
+  }
+] 
