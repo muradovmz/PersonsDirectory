@@ -1,38 +1,27 @@
 [
   {
-    "Id": "c75d06a8-a705-48ec-b6b3-9076becf20f4",
     "PersonId": "632b2279-9fab-498e-99c1-ecc2d0cdba06",
-    "RelatedPersonId": "2f40f5c0-43d7-4c91-9a1b-313402ee79a9",
+    "RelatedPersonId": "3F8BBF31-442D-450D-5649-08D92BE6D987",
     "RelationshipId": 1
   },
   {
-    "Id": "b85d06a8-a705-48ec-b6b3-9076becf20f5",
     "PersonId": "632b2279-9fab-498e-99c1-ecc2d0cdba06",
-    "RelatedPersonId": "2ddc7a48-6ed4-4813-a849-4b1f83b743ab",
-    "RelationshipId": 2
+    "RelatedPersonId": "2F40F5C0-43D7-4C91-9A1B-313402EE79A9",
+    "RelationshipId": 3
   },
   {
-    "Id": "0f8fad5b-d9cb-469f-a165-70867728950e",
-    "PersonId": "632b2279-9fab-498e-99c1-ecc2d0cdba06",
+    "PersonId": "3F8BBF31-442D-450D-5649-08D92BE6D987",
+    "RelatedPersonId": "2F40F5C0-43D7-4C91-9A1B-313402EE79A9",
+    "RelationshipId": 4
+  },
+  {
+    "PersonId": "2DDC7A48-6ED4-4813-A849-4B1F83B743AB",
     "RelatedPersonId": "3F8BBF31-442D-450D-5649-08D92BE6D987",
     "RelationshipId": 3
   },
   {
-    "Id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
     "PersonId": "3F8BBF31-442D-450D-5649-08D92BE6D987",
-    "RelatedPersonId": "2f40f5c0-43d7-4c91-9a1b-313402ee79a9",
-    "RelationshipId": 4
-  },
-  {
-    "Id": "F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4",
-    "PersonId": "hgiy2279-9fab-498e-99c1-ecc2d0cd4fev",
-    "RelatedPersonId": "2f40f5c0-43d7-4c91-9a1b-313402ee79a9",
-    "RelationshipId": 3
-  },
-  {
-    "Id": "936DA01F-9ABD-4d9d-80C7-02AF85C822A8",
-    "PersonId": "3F8BBF31-442D-450D-5649-08D92BE6D987",
-    "RelatedPersonId": "05394204-3085-4C56-564A-08D92BE6D987",
+    "RelatedPersonId": "632b2279-9fab-498e-99c1-ecc2d0cdba06",
     "RelationshipId": 1
   }
 ]

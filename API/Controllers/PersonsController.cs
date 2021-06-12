@@ -1,4 +1,6 @@
-﻿using Application.Persons;
+﻿using Application.Core;
+using Application.Persons;
+using Application.Persons.DTOs;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,9 +13,9 @@ namespace API.Controllers
     public class PersonsController : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Person>>> GetPersons()
+        public async Task<ActionResult<List<Person>>> GetPersons([FromQuery] PersonParams param)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query { Params = param }));
         }
 
         [HttpGet("{id}")]
@@ -39,6 +41,36 @@ namespace API.Controllers
         public async Task<IActionResult> DelatePerson(Guid id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
+        }
+
+        [HttpPost("{id}/addRelatedPerson")]
+        public async Task<IActionResult> AddRelatedPerson(Guid id, RelatedPerson relatedPerson)
+        {
+            return HandleResult(await Mediator.Send(new AddRelatedPerson.Command { Id = id, RelatedPerson = relatedPerson }));
+        }
+
+        [HttpPost("{id}/removeRelatedPerson")]
+        public async Task<IActionResult> RemoveRelatedPerson(Guid id, Guid relatedPersonId)
+        {
+            return HandleResult(await Mediator.Send(new RemoveRelatedPerson.Command { PersonId = id, RelatedPersonId = relatedPersonId }));
+        }
+
+        [HttpPost("{id}/photo/{photoId}")]
+        public async Task<IActionResult> SetMainPhoto(Guid id, int photoId)
+        {
+            return HandleResult(await Mediator.Send(new SetPersonMainPhoto.Command { Id = id, PhotoId = photoId }));
+        }
+
+        [HttpPut("{id}/photo")]
+        public async Task<IActionResult> AddPersonPhoto(Guid id, [FromForm] PersonPhotoDto photoDto)
+        {
+            return HandleResult(await Mediator.Send(new AddPersonPhoto.Command { Id = id, PhotoDto = photoDto }));
+        }
+
+        [HttpDelete("{id}/photo/{photoId}")]
+        public async Task<ActionResult> DeletePersonPhoto(Guid id, int photoId)
+        {
+            return HandleResult(await Mediator.Send(new RemovePersonPhoto.Command { Id = id, PhotoId = photoId }));
         }
     }
 }

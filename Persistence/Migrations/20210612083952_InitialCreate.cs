@@ -75,9 +75,20 @@ namespace Persistence.Migrations
                 {
                     table.PrimaryKey("PK_RelatedPersons", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_RelatedPersons_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_RelatedPersons_Persons_RelatedPersonId",
                         column: x => x.RelatedPersonId,
                         principalTable: "Persons",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RelatedPersons_Relationships_RelationshipId",
+                        column: x => x.RelationshipId,
+                        principalTable: "Relationships",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -88,9 +99,19 @@ namespace Persistence.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RelatedPersons_PersonId",
+                table: "RelatedPersons",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RelatedPersons_RelatedPersonId",
                 table: "RelatedPersons",
                 column: "RelatedPersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RelatedPersons_RelationshipId",
+                table: "RelatedPersons",
+                column: "RelationshipId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -102,10 +123,10 @@ namespace Persistence.Migrations
                 name: "RelatedPersons");
 
             migrationBuilder.DropTable(
-                name: "Relationships");
+                name: "Persons");
 
             migrationBuilder.DropTable(
-                name: "Persons");
+                name: "Relationships");
         }
     }
 }

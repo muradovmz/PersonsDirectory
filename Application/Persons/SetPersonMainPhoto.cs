@@ -1,8 +1,7 @@
 ﻿using Application.Core;
-using Domain;
+using Application.Interfaces;
 using Domain.Intefaces;
 using MediatR;
-using Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +11,18 @@ using System.Threading.Tasks;
 
 namespace Application.Persons
 {
-    public class Delete
+    public class SetPersonMainPhoto
     {
-        public class Command:IRequest<Result<Unit>>
+        public class Command : IRequest<Result<Unit>>
         {
             public Guid Id { get; set; }
+            public int PhotoId { get; set; }
         }
 
-        public class Handler:IRequestHandler<Command, Result<Unit>>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly IUnitOfWork _unitOfWork;
+            private readonly IPhotoService _photoService;
 
             public Handler(IUnitOfWork unitOfWork)
             {
@@ -32,24 +33,17 @@ namespace Application.Persons
             {
                 var person = _unitOfWork.Person.Table.SingleOrDefault(x => x.Id == request.Id);
 
-                if (person == null) return null;
+                if (person.Photos.All(x => x.Id != request.PhotoId)) return null;
 
-                var relatedPersons = _unitOfWork.RelatedPerson.Table.Where(x => x.PersonId == request.Id || x.RelatedPersonId == request.Id);
+                person.SetMainPhoto(request.PhotoId);
 
-                foreach (var item in relatedPersons)
-                {
-                    _unitOfWork.RelatedPerson.Delete(item);
-                }
-
-                _unitOfWork.Person.Delete(person);
+                _unitOfWork.Person.Update(person);
 
                 var result = await _unitOfWork.Complete() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to delete the person");
+                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Failed to remove person's photo");
 
-                return Result<Unit>.Success(Unit.Value);
             }
         }
-
     }
 }

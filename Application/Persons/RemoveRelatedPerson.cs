@@ -1,9 +1,6 @@
 ﻿using Application.Core;
-using Domain;
 using Domain.Intefaces;
-using FluentValidation;
 using MediatR;
-using Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +10,12 @@ using System.Threading.Tasks;
 
 namespace Application.Persons
 {
-    public class Create
+    public class RemoveRelatedPerson
     {
-        public class Command:IRequest<Result<Unit>>
+        public class Command : IRequest<Result<Unit>>
         {
-            public Person Person { get; set; }
-        }
-
-        public class CommandValidator : AbstractValidator<Command>
-        {
-            public CommandValidator()
-            {
-                RuleFor(x => x.Person).SetValidator(new PersonValidator());
-            }
+            public Guid PersonId { get; set; }
+            public Guid RelatedPersonId { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -39,16 +29,15 @@ namespace Application.Persons
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (_unitOfWork.Person.TableNoTracking.Any(x => x.PrivateNumber == request.Person.PrivateNumber))
-                {
-                    throw new ApplicationException("Person is already added");
-                }
+                var relatedPerson = _unitOfWork.RelatedPerson.Table.SingleOrDefault(x => x.PersonId == request.PersonId && x.RelatedPersonId == request.RelatedPersonId);
 
-                _unitOfWork.Person.Add(request.Person);
+                if (relatedPerson == null) return null;
+
+                _unitOfWork.RelatedPerson.Delete(relatedPerson);
 
                 var result = await _unitOfWork.Complete() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to create activity");
+                if (!result) return Result<Unit>.Failure("Failed to delete the related person");
 
                 return Result<Unit>.Success(Unit.Value);
             }

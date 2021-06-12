@@ -19,11 +19,17 @@ namespace Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Person>()
-                .HasMany<RelatedPerson>(p => p.RelatedPersons)
-                .WithOne(x => x.Person)
-                .HasForeignKey(y => y.RelatedPersonId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<RelatedPerson>()
+                .HasOne(p => p.RelatPerson)
+                .WithMany()
+                .HasForeignKey(p => p.RelatedPersonId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RelatedPerson>()
+                .HasOne(x => x.Person)
+                .WithMany(y => y.RelatedPeople)
+                .HasForeignKey(pt => pt.PersonId);
+
         }
     }
 }

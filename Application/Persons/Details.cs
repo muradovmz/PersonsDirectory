@@ -1,6 +1,11 @@
 ﻿using Application.Core;
+using Application.Persons.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
+using Domain.Intefaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -12,24 +17,31 @@ namespace Application.Persons
 {
     public class Details
     {
-        public class Query:IRequest<Result<Person>>
+        public class Query:IRequest<Result<PersonDto>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler:IRequestHandler<Query, Result<Person>>
+        public class Handler:IRequestHandler<Query, Result<PersonDto>>
         {
-            private readonly DataContext _context;
+            private readonly IUnitOfWork _unitOfWork;
+            private readonly IMapper _mapper;
 
-            public Handler(DataContext context)
+            public Handler(IUnitOfWork unitOfWork, IMapper mapper)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
+                _mapper = mapper;
             }
 
-            public async Task<Result<Person>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PersonDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var person = await _context.Persons.FindAsync(request.Id);
-                return Result<Person>.Success(person);
+                var person = await _unitOfWork.Person.TableNoTracking
+                    .ProjectTo<PersonDto>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync(x => x.Id == request.Id);
+
+                
+
+                return Result<PersonDto>.Success(person);
             }
         }
     }

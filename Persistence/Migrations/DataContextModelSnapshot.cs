@@ -100,7 +100,11 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PersonId");
+
                     b.HasIndex("RelatedPersonId");
+
+                    b.HasIndex("RelationshipId");
 
                     b.ToTable("RelatedPersons");
                 });
@@ -134,19 +138,35 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.RelatedPerson", b =>
                 {
                     b.HasOne("Domain.Person", "Person")
-                        .WithMany("RelatedPersons")
+                        .WithMany("RelatedPeople")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Person", "RelatPerson")
+                        .WithMany()
                         .HasForeignKey("RelatedPersonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Relationship", "Relationship")
+                        .WithMany()
+                        .HasForeignKey("RelationshipId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Person");
+
+                    b.Navigation("Relationship");
+
+                    b.Navigation("RelatPerson");
                 });
 
             modelBuilder.Entity("Domain.Person", b =>
                 {
                     b.Navigation("Photos");
 
-                    b.Navigation("RelatedPersons");
+                    b.Navigation("RelatedPeople");
                 });
 #pragma warning restore 612, 618
         }

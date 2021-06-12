@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Domain
 {
-    public class Person
+    public class Person:BaseEntity
     {
-        public Guid Id { get; set; }
         public string PrivateNumber { get; set; }
         public string FirstnameGE { get; set; }
         public string FirstnameEN { get; set; }
@@ -17,11 +16,34 @@ namespace Domain
         public string Address { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-
-        public ICollection<RelatedPerson> RelatedPersons { get; set; }
+        private readonly List<RelatedPerson> _relatedPeople = new List<RelatedPerson>();
+        public ICollection<RelatedPerson> RelatedPeople => _relatedPeople;
 
         private readonly List<Photo> _photos = new List<Photo>();
         public IReadOnlyList<Photo> Photos => _photos.AsReadOnly();
+
+
+
+        public void AddRelatedPerson(Guid personId, Guid relatedPersonId, int relationalshipId)
+        {
+            var relatedPerson = new RelatedPerson
+            {
+                PersonId=personId,
+                RelatedPersonId=relatedPersonId,
+                RelationshipId=relationalshipId
+            };
+
+
+            _relatedPeople.Add(relatedPerson);
+        }
+
+
+        public void RemoveRelatedPerson(Guid personId, Guid relatedPersonId)
+        {
+            var relatedPerson = _relatedPeople.Find(x => x.PersonId==personId && x.RelatedPersonId==relatedPersonId);
+            _relatedPeople.Remove(relatedPerson);
+        }
+
 
         public void AddPhoto(string pictureUrl, string fileName, bool isMain = false)
         {

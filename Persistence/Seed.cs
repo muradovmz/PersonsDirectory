@@ -59,8 +59,12 @@ namespace Persistence
                         person.AddPhoto(item.PictureUrl, pictureFileName);
                         context.Persons.Add(person);
                     }
-
+                    
                     await context.SaveChangesAsync();
+
+                  
+
+
                 }
 
                 if (!context.RelatedPersons.Any())
@@ -71,16 +75,13 @@ namespace Persistence
 
                     foreach (var item in relatedPeople)
                     {
-                        Guid guidId;
                         Guid personGuid;
                         Guid relatedPersonGuid;
-                        Guid.TryParse(item.Id, out guidId);
                         Guid.TryParse(item.PersonId, out personGuid);
                         Guid.TryParse(item.RelatedPersonId, out relatedPersonGuid);
 
                         var relatedPerson = new RelatedPerson
                         {
-                            Id = guidId,
                             PersonId = personGuid,
                             RelatedPersonId = relatedPersonGuid,
                             RelationshipId = item.RelationshipId
@@ -91,7 +92,6 @@ namespace Persistence
 
                     await context.SaveChangesAsync();
                 }
-
 
             }
             catch (Exception ex)

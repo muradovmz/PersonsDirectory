@@ -1,11 +1,13 @@
 ﻿using Application.Core;
 using AutoMapper;
 using Domain;
+using Domain.Intefaces;
 using FluentValidation;
 using MediatR;
 using Persistence;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,24 +29,28 @@ namespace Application.Persons
         }
         public class Handler:IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly IUnitOfWork _unitOfWork;
             private readonly IMapper _mapper;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(IUnitOfWork unitOfWork, IMapper mapper)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
                 _mapper = mapper;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var person = await _context.Persons.FindAsync(request.Person.Id);
+
+
+                var person = _unitOfWork.Person.Table.SingleOrDefault(x=>x.Id==request.Person.Id);
 
                 if (person == null) return null;
 
                 _mapper.Map(request.Person, person);
 
-                var result = await _context.SaveChangesAsync()>0;
+                _unitOfWork.Person.Update(person);
+
+                var result = await _unitOfWork.Complete() > 0;
 
                 if (!result) return Result<Unit>.Failure("Failed to update the person");
 
