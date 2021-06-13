@@ -1,0 +1,63 @@
+version: '3.4'
+
+services:
+  persondb:
+    container_name: persondb
+    environment:
+        SA_PASSWORD: "SwN12345678"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "1433:1433"
+
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+
+  api:
+    container_name: api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DefaultConnection=Server=persondb;Database=PersonDb;User Id=sa;Password=SwN12345678;"
+    depends_on:
+      - persondb
+    ports:
+      - "8004:80"
+
+  elasticsearch:
+    container_name: elasticsearch
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - elastic
+    ports:
+      - "8005:80"
+
+  elastic:
+    container_name: elastic
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200                   
+
+
+volumes:
+  elasticsearch-data:
+
+
